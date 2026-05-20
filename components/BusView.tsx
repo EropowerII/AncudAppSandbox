@@ -1,7 +1,7 @@
 import React from 'react';
 import { BUS_SCHEDULE, TRANSLATIONS } from '../constants';
 import { Language } from '../types';
-import { Clock, MapPin, BusFront, ArrowRight } from 'lucide-react';
+import { Clock, MapPin, BusFront } from 'lucide-react';
 
 interface BusViewProps {
   language: Language;
@@ -17,7 +17,7 @@ const BusView: React.FC<BusViewProps> = ({ language }) => {
              <MapPin className="shrink-0" size={20} />
            </div>
            <div>
-             <p className="text-xs font-medium opacity-80 uppercase tracking-wider mb-1">Origin Terminal</p>
+             <p className="text-xs font-medium opacity-80 uppercase tracking-wider mb-1">{TRANSLATIONS.originTerminal[language]}</p>
              <p className="text-sm font-bold leading-tight">{TRANSLATIONS.busOrigin[language].split(': ')[1]}</p>
            </div>
         </div>
@@ -32,7 +32,7 @@ const BusView: React.FC<BusViewProps> = ({ language }) => {
             <div className="p-4 pl-6">
               {/* Route Header */}
               <div className="flex items-center space-x-2 mb-3">
-                <span className="text-xs font-bold text-slate-400 uppercase">Route {idx + 1}</span>
+                <span className="text-xs font-bold text-slate-400 uppercase">{TRANSLATIONS.route[language]} {idx + 1}</span>
                 <div className="flex-grow border-t border-slate-100 dashed"></div>
                 <BusFront size={16} className="text-blue-500" />
               </div>
@@ -49,7 +49,7 @@ const BusView: React.FC<BusViewProps> = ({ language }) => {
               <div className="bg-slate-50 rounded-lg p-3 flex items-start space-x-3">
                 <Clock size={16} className="text-slate-400 mt-0.5 shrink-0" />
                 <p className="text-sm text-slate-600 font-medium leading-relaxed">
-                  {route.schedule}
+                  {route.schedule[language]}
                 </p>
               </div>
             </div>

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AppView, Language } from './types';
 import { TRANSLATIONS } from './constants';
-import { Calendar, Store, Map as MapIcon, Bus, Info, Globe } from 'lucide-react';
+import { Calendar, Store, Map as MapIcon, Bus, Info, Globe, ChevronDown } from 'lucide-react';
 import EventsView from './components/EventsView';
 import BusinessView from './components/BusinessView';
 import MapView from './components/MapView';
@@ -13,6 +13,21 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<AppView>(AppView.MAP);
   const [language, setLanguage] = useState<Language>(Language.ESP);
   const [focusedLocationId, setFocusedLocationId] = useState<string | null>(null);
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsLangOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Fake loading screen
   useEffect(() => {
@@ -22,13 +37,14 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleLanguageToggle = () => {
-    setLanguage(prev => prev === Language.ESP ? Language.ENG : Language.ESP);
-  };
-
   const handleViewOnMap = (locationId: string) => {
     setFocusedLocationId(locationId);
     setActiveTab(AppView.MAP);
+  };
+
+  const handleLanguageSelect = (lang: Language) => {
+    setLanguage(lang);
+    setIsLangOpen(false);
   };
 
   if (isLoading) {
@@ -53,13 +69,33 @@ export default function App() {
           </div>
           <span className="font-bold text-slate-800 text-lg">Ancud Discovery</span>
         </div>
-        <button 
-          onClick={handleLanguageToggle}
-          className="flex items-center space-x-1 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-semibold text-blue-800 transition-colors"
-        >
-          <Globe size={14} />
-          <span>{language}</span>
-        </button>
+        
+        {/* Language Dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <button 
+            onClick={() => setIsLangOpen(!isLangOpen)}
+            className="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-full text-xs font-semibold text-blue-800 transition-colors border border-slate-200"
+          >
+            <Globe size={14} />
+            <span>{language}</span>
+            <ChevronDown size={14} className={`transition-transform duration-200 ${isLangOpen ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {isLangOpen && (
+            <div className="absolute right-0 top-full mt-2 w-32 bg-white rounded-xl shadow-xl border border-slate-100 py-1 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+              {Object.values(Language).map((lang) => (
+                <button
+                  key={lang}
+                  onClick={() => handleLanguageSelect(lang)}
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition-colors flex items-center justify-between ${language === lang ? 'text-blue-600 font-bold bg-blue-50' : 'text-slate-600'}`}
+                >
+                  <span>{lang}</span>
+                  {language === lang && <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </header>
 
       {/* Main Content Area */}

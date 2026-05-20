@@ -16,8 +16,8 @@ const InfoView: React.FC<InfoViewProps> = ({ language }) => {
   return (
     <div className="flex-1 overflow-y-auto bg-slate-50 p-4 space-y-4 no-scrollbar">
       <div className="pb-2">
-        <h2 className="text-2xl font-bold text-slate-800 text-red-600">Emergency & Info</h2>
-        <p className="text-sm text-slate-500">Important contacts in Ancud</p>
+        <h2 className="text-2xl font-bold text-slate-800 text-red-600">{TRANSLATIONS.emergencyInfo[language]}</h2>
+        <p className="text-sm text-slate-500">{TRANSLATIONS.importantContacts[language]}</p>
       </div>
 
       <div className="space-y-4">
@@ -44,7 +44,7 @@ const InfoView: React.FC<InfoViewProps> = ({ language }) => {
                   onClick={() => handleCall(contact.phone2!)}
                   className="w-full bg-white border border-green-500 text-green-600 font-bold py-2 px-4 rounded-lg hover:bg-green-50 transition-colors text-sm"
                 >
-                  Secondary: {contact.phone2}
+                  {TRANSLATIONS.secondaryPhone[language]}: {contact.phone2}
                 </button>
               )}
             </div>

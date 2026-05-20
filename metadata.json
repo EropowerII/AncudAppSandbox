@@ -3,5 +3,6 @@
   "description": "A tourist discovery app for Ancud, Chiloé, featuring events, local businesses, bus schedules, and an interactive map.",
   "requestFramePermissions": [
     "geolocation"
-  ]
+  ],
+  "majorCapabilities": []
 }

@@ -1,6 +1,12 @@
 export enum Language {
   ESP = 'ESP',
-  ENG = 'ENG'
+  ENG = 'ENG',
+  DEU = 'DEU',
+  ITA = 'ITA',
+  FRA = 'FRA',
+  POR = 'POR',
+  JPN = 'JPN',
+  CHN = 'CHN'
 }
 
 export enum AppView {
@@ -22,6 +28,10 @@ export enum LocationType {
   BUSINESS = 'Business'
 }
 
+export type LocalizedString = {
+  [key in Language]: string;
+};
+
 export interface Coordinates {
   lat: number;
   lng: number;
@@ -29,9 +39,9 @@ export interface Coordinates {
 
 export interface AppLocation {
   id: string;
-  name: string;
+  name: LocalizedString;
   type: LocationType;
-  description?: string;
+  description?: LocalizedString;
   coordinates: Coordinates;
   link?: string;
 }
@@ -40,23 +50,24 @@ export interface EventItem {
   id: string;
   date: string;
   time: string;
-  title: string;
-  program: string;
-  description: string;
+  title: LocalizedString;
+  program: LocalizedString;
+  description: LocalizedString;
   locationId: string; // References AppLocation
 }
 
 export interface BusinessItem {
   id: string;
-  title: string;
-  subtitle: string;
-  description: string;
+  title: LocalizedString;
+  subtitle: LocalizedString;
+  description: LocalizedString;
   locationId: string; // References AppLocation
+  imageUrl: string;
 }
 
 export interface BusRoute {
-  destination: string;
-  schedule: string;
+  destination: string; // Destination names usually don't change
+  schedule: LocalizedString;
 }
 
 export interface EmergencyContact {
@@ -68,7 +79,6 @@ export interface EmergencyContact {
 
 export interface Translation {
   [key: string]: {
-    [Language.ESP]: string;
-    [Language.ENG]: string;
+    [key in Language]: string;
   };
 }
